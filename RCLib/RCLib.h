@@ -1,4 +1,4 @@
-	/*
+/*
  * RCLib.h
  * This lib is based on the code created by Duane and shared at
  * http://rcarduino.blogspot.com/2012/04/how-to-read-multiple-rc-channels-draft.html
@@ -27,7 +27,6 @@
 
 #include "Arduino.h"
 
-
 // holds the update flags of the channels
 volatile uint8_t SharedUpdateFlag=0;
 volatile uint16_t SharedRCValue[NUM_RC_CHANNELS];
@@ -40,6 +39,7 @@ volatile uint16_t SharedRCValue[NUM_RC_CHANNELS];
 #elif NUM_DIGITAL_PINS == 20
 #define UNO
 #warning "If the used board is not a UNO there is a problem"
+#warning "Note: Newer versions of the UNO can only use pins 2 and 3 for interrupts"
 #elif NUM_ANALOG_INPUTS  ==8
 #error "this chip is not supported"
 #else
@@ -69,7 +69,13 @@ const uint8_t InterruptMap[22]  = {255,255,0,1,255,255,255,255,255,255,255,255,2
 #error "The UNO can only have 2 interrupts if you do not use the pinchangeint library"
 #endif
 #define LastAvailablePin 4
-prog_uint8_t InterruptMap[4]={255,255,0,1};
+
+// MODIFICATION 24 June 2016 (Tom Barchyn) - changed this from prog_uint8_t to uint8_t to get
+// around depreciated prog types declaration. Following : 
+// https://github.com/arduino/Arduino/wiki/1.6-Frequently-Asked-Questions
+// Probably will need changing for other arduino board types, but I don't know enough to be
+// sure and haven't changed it.
+uint8_t InterruptMap[4]={255,255,0,1};
 #endif
 
 #ifdef LEONARDO
